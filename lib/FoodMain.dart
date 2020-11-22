@@ -7,6 +7,7 @@ import 'package:flutter/services.dart';
 
 import 'AppEngine.dart';
 import 'AppEngine.dart';
+import 'AppEngine.dart';
 
 class FoodMain extends StatefulWidget {
   Map item;
@@ -139,7 +140,7 @@ class FoodMain extends StatefulWidget {
 
    opay(double amount)async{
     showProgress(true, context);
-     MethodChannel _methodChannel = MethodChannel('channel/john');
+     MethodChannel _methodChannel = MethodChannel('channel.john');
      bool success = false;
      try {
        success = await _methodChannel.invokeMethod(
@@ -148,6 +149,7 @@ class FoodMain extends StatefulWidget {
          "id":generateNumber(),
        });
      } on PlatformException catch(e){
+       showProgress(false, context);
        print(e.message);
      }
      print(success);

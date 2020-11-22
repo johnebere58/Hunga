@@ -127,7 +127,7 @@ class _progressDialogState extends State<progressDialog> {
           child: Container(width: 50,height:50,child: LoadingIndicator(indicatorType: Indicator.ballRotate, color: white,)),
         ),
 
-        Center(child: Image.asset(getMyAsset("plain_item"),width: 40,color: white.withOpacity(.7),),),
+//        Center(child: Image.asset(getMyAsset("ic_plain"),width: 40,color: white.withOpacity(.7),),),
 
 
         Column(
