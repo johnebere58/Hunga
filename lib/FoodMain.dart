@@ -3,6 +3,10 @@
  import 'package:Hunga/AppEngine.dart';
 import 'package:Hunga/assets.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+
+import 'AppEngine.dart';
+import 'AppEngine.dart';
 
 class FoodMain extends StatefulWidget {
   Map item;
@@ -113,6 +117,7 @@ class FoodMain extends StatefulWidget {
             onPressed: (){
               // pushAndResult(context, ListFoods(),
               //     transitionBuilder: fadeTransition);
+              opay(double.parse(price.toString()));
             },
             shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(25)
@@ -130,5 +135,22 @@ class FoodMain extends StatefulWidget {
         )
       ],
     );
+   }
+
+   opay(double amount)async{
+    showProgress(true, context);
+     MethodChannel _methodChannel = MethodChannel('channel/john');
+     bool success = false;
+     try {
+       success = await _methodChannel.invokeMethod(
+           "pay",{
+             "amount":amount,
+         "id":generateNumber(),
+       });
+     } on PlatformException catch(e){
+       print(e.message);
+     }
+     print(success);
+    showProgress(false, context);
    }
  }

@@ -1,5 +1,7 @@
 
 
+import 'dart:math';
+
 import 'package:Hunga/assets.dart';
 import 'package:Hunga/dialogs/listDialog.dart';
 import 'package:Hunga/dialogs/messageDialog.dart';
@@ -269,80 +271,11 @@ makeFirstUpper(String text){
   return text.substring(0,1).toUpperCase()+text.substring(1);
 }
 
-
-void getApplicationsAPICall(
-    context, String url, onComplete(response, error),
-    {@required data,
-      bool getMethod = false,
-      String progressMessage,@required bool silently,
-      bool ignoreIfNoResponseDescription=false}) async {
-  silently = silently??false;
-  if(!silently)showProgress(true, context,msg: progressMessage);
-
-
-  if(getMethod && data!=null){
-    url = "$url?";
-    data.forEach((key, value) {
-      url = "$url$key=$value&";
-    });
-    if(url.endsWith("&")){
-      url = url.substring(0,url.length-1);
-    }
+generateNumber() {
+  String policyNumber = '';
+  String possibleRef = 'ABCDE01FGHIJLLKDNKLMLSML890908497439HHKKVFTDRTQU23KLMNO45PGRST67UVWX89YX';
+  for (int i = 0; i < 5; i++) {
+    policyNumber += possibleRef[Random().nextInt(possibleRef.length)];
   }
-  // if ((!(await isConnected()))) {
-  //   if(!silently)showProgress(false, context);
-  //   await Future.delayed(Duration(milliseconds: 600));
-  //   onComplete(null, "No internet connectivity");
-  //   return;
-  // }
-  try {
-    Dio dio = Dio();
-    dio.interceptors.add(
-        InterceptorsWrapper(onRequest: (RequestOptions options) {
-          // Do something before request is sent
-          options.headers['content-Type'] = 'application/json';
-          options.headers["MerchantId"] = "256620112218046";
-          options.headers["Authorization"] = "OPAYPUB16060395869560.5467954372775526";
-          return options;
-        }));
-    (dio.httpClientAdapter as DefaultHttpClientAdapter).onHttpClientCreate =
-        (HttpClient client) {
-      client.badCertificateCallback =
-          (X509Certificate cert, String host, int port) => true;
-      return client;
-    };
-    String reqUrl = url +  (getMethod?"":"?obj=$data");
-    print(">>> Requesting $reqUrl  $data<<<");
-    var res = putMethod
-        ? (await dio.put(
-      url,
-      data: data,
-    ))
-        : getMethod
-        ? (await dio.get(
-      reqUrl,//queryParameters: data
-    ))
-        : patchMethod
-        ? (await dio.patch(
-      url,
-      data: data,
-    ))
-        : await dio.post(
-      reqUrl,
-      data: data,
-    );
-    if(!silently)showProgress(false, context);
-    await Future.delayed(Duration(milliseconds: 600));
-    String error = getResponseMessage(res,otpRequest: otpRequest,
-        ignoreIfNoResponseDescription:ignoreIfNoResponseDescription);
-    var response = getResponse(res);
-    print("error: $error, response>>: ${response} <<");
-    onComplete(response,error);
-  } catch (e) {
-//    print("The error $e");
-    if(!silently)showProgress(false, context);
-    await Future.delayed(Duration(milliseconds: 600));
-    onComplete(null, getErrorMessage(e));
-  }
+  return policyNumber;
 }
-
