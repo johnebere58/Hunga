@@ -139,7 +139,7 @@ class FoodMain extends StatefulWidget {
    }
 
    opay(double amount)async{
-    showProgress(true, context);
+//    showProgress(true, context);
      MethodChannel _methodChannel = MethodChannel('channel.john');
      bool success = false;
      try {
@@ -149,10 +149,10 @@ class FoodMain extends StatefulWidget {
          "id":generateNumber(),
        });
      } on PlatformException catch(e){
-       showProgress(false, context);
+//       showProgress(false, context);
        print(e.message);
      }
      print(success);
-    showProgress(false, context);
+//    showProgress(false, context);
    }
  }
